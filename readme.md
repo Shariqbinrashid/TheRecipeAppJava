@@ -1,4 +1,4 @@
-# Assignment #4 
+
 # Class diagram 
 ![class diagram](./img/finalCD.JPG)
 
