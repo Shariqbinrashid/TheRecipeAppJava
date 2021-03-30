@@ -1,5 +1,5 @@
-# Terminal based recipie app on JAVA 
-I have a project of implementing Strategy patter so  codded this small app which have a search strategy patern.
+# Terminal based recipe app on JAVA 
+I have a project of implementing Strategy pattern so  codded this small app which have a search strategy patern.
 
 An application that handles recipes. In essence this is a digital cooking book with recipes that you can add, delete and view via the terminal. All recipes are to be stored on file and read when the program starts (as well as saved when the program is closed). As it is digital, you should be able to do some additional things as compared to a normal book, for instance change the number of portions or list based on ingredient or max price
 
