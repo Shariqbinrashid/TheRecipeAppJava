@@ -15,7 +15,8 @@ public class Main {
 	
 	public void readIngredients() {
 		try {
-            File f = new File("D:\\ingredients.txt");
+			
+            File f = new File("D:\\SWEDEN\\harris\\assignment4\\ingredients.txt");
             Scanner sc = new Scanner(f);
 
 
@@ -37,7 +38,7 @@ public class Main {
 	public void readrecipes() {
 
 		try {
-            File f = new File("D:\\recipes.txt");
+            File f = new File("D:\\SWEDEN\\harris\\assignment4\\recipes.txt");
             Scanner sc = new Scanner(f);
 
 outer:
@@ -88,9 +89,9 @@ outer:
 	}
 
 public void updateRecipes() {
-	File fold=new File("D:\\recipes.txt");
+	File fold=new File("D:\\SWEDEN\\harris\\assignment4\\recipes.txt");
 	fold.delete();
-	File fnew=new File("D:\\recipes.txt");
+	File fnew=new File("D:\\SWEDEN\\harris\\assignment4\\recipes.txt");
 
 
 	try {
@@ -102,8 +103,11 @@ public void updateRecipes() {
 	    	
 	    	for (Ingredient i : p.getRecipeIngredients()) {
 	    		   
-	    			String check=""+p.getAmountList().get(p.getAmount(i));
-    				ing=ing.concat(check).concat(":").concat(i.getName()).concat(";");
+    				ing=ing.concat(""+p.getAmountList().get(p.getAmount(i))).concat(":").concat(i.getName());
+    				
+    				if(i!=p.getRecipeIngredients().get(p.getRecipeIngredients().size()-1)) {
+    					ing.concat(";");
+    				}
     				 
     			
 		    }
@@ -118,9 +122,9 @@ public void updateRecipes() {
 
 public void updateIng()
 {
-	File fold=new File("D:\\ingredients.txt");
+	File fold=new File("D:\\SWEDEN\\harris\\assignment4\\ingredients.txt");
 	fold.delete();
-	File fnew=new File("D:\\ingredients.txt");
+	File fnew=new File("D:\\SWEDEN\\harris\\assignment4\\ingredients.txt");
 
 
 	try {
@@ -145,7 +149,211 @@ public void serachStrategy(searchStrategy s) {
 		s.search(recipes);
 		
 	}
-	public void menu() {
+
+public void case1() {
+	Scanner s = new Scanner(System.in);
+	System.out.println(" All recipes ");
+	int count=1;
+	for(Recipe p: recipes){
+		System.out.println(count+"- "+p.getName());
+		System.out.println("Portion "+p.getNoOfPortion());
+		System.out.println("Ingredients: ");
+    	for(Ingredient i:p.getRecipeIngredients()) {
+    		
+    		System.out.println(i.getName()+" "+p.getAmountList().get(p.getAmount(i))+" "+i.getUnit()+" Price: (per "+i.getUnit()+" "+i.getInprice()+")");
+    		
+    	}
+    	System.out.println("Comments: ");
+    	String []com=p.getComments().split(";");
+    	for(String i: com) {
+    		System.out.println("- "+i);
+    	}
+    	System.out.println("Price: "+p.getPrice());
+    	System.out.println("***************");
+		System.out.println("");
+		count++;
+    }    
+	
+	
+}
+
+public void case2() {
+	Scanner aaa = new Scanner(System.in);
+	
+	System.out.println(" Adding recipes ");
+	System.out.println(" Enter  name: ");
+	String nam=aaa.nextLine();
+	System.out.println(" Enter  portion: ");
+	String porr=aaa.nextLine();
+	System.out.println(" Enter  indgredients in format : exapmle(1:flour;2:cream;1:cinnamon) ");
+	String inggg=aaa.nextLine();
+	System.out.println(" Enter  comments in format  : exapmle(Mix everything;Wait one day;Make figures) ");
+	String comm=aaa.nextLine();
+	
+	String[] in =inggg.split(";");
+	
+	List<Ingredient> ingredientsadd = new ArrayList<Ingredient>();
+	 List amount = new ArrayList();
+	for(String pp: in) {
+    	String[] ing2=pp.split(":");
+    	int am=Integer.parseInt(ing2[0]);
+    	String ingname=ing2[1];
+    
+    	for (Ingredient temp : ingredients) {
+    		
+            if(ingname.equals(temp.getName())) {
+            	ingredientsadd.add(temp);
+            	amount.add(am);
+            }
+        }
+    	
+    }
+	Recipe pp=new Recipe(nam,porr,comm,ingredientsadd,amount);
+	recipes.add(pp);
+	System.out.println(pp.getName()+" - Recipe added");
+}
+
+public void case3() {
+	Scanner aaaa = new Scanner(System.in);
+	
+	System.out.println(" Deleting recipes ");
+	System.out.println(" Enter  name: ");
+	String nammm=aaaa.nextLine();
+	Recipe chf=null;
+	boolean chee=false;
+	for(Recipe p:recipes) {
+		if(p.getName().equals(nammm)) {
+			System.out.println(p.getName()+" - Recipe deleted");
+			chf=p;
+			chee=true;
+			
+			
+		}
+			
+	}
+	
+	if(chee)
+	 recipes.remove(chf);
+	else
+		System.out.println("Recipe not exist");
+}
+	
+public void case4() {
+	System.out.println("Enter 1 to search by name and 2 to search by max price");
+	Scanner kk = new Scanner(System.in);
+	int hh = kk.nextInt();
+	
+	if(hh==1) {
+		System.out.println("Enter recipie name");
+		Scanner kkk = new Scanner(System.in);
+		String nm= kkk.nextLine();
+		serachStrategy(new nameStrategy(nm));
+	}
+	else {
+		serachStrategy(new priceStretegy());
+	}
+}
+
+public void case5() {
+	System.out.println(" All Ingredients ");
+	int count=1;
+	for(Ingredient p: ingredients){
+		System.out.println(count+"- "+p.getName());
+		System.out.println("Unit: "+p.getUnit());
+		System.out.println("Price: "+p.getInprice());
+    	
+    	System.out.println("***************");
+		System.out.println("");
+		count++;
+    }  
+}
+
+public void case6() {
+	System.out.println(" View particular Ingredient details ");
+	System.out.println(" Enter Ingredient name ");
+	Scanner sc = new Scanner(System.in);
+	String ingg = sc.nextLine();
+	
+	boolean check=false;
+	for(Ingredient p: ingredients){
+		  if(p.getName().equals(ingg)){
+			  System.out.println(""+p.getName());
+				System.out.println("Unit: "+p.getUnit());
+				System.out.println("Price: "+p.getInprice());
+            	
+            	System.out.println("***************");
+        		System.out.println("");
+        		check=true;
+		  }
+		  
+    }    
+	if (check==false) {
+		System.out.println("Ingredient not found");
+		System.out.println("***************");
+		System.out.println("");
+	}
+}
+
+public void case7() {
+	Scanner haha = new Scanner(System.in);
+	Scanner hahaa = new Scanner(System.in);
+	
+	System.out.println(" Adding ingredient ");
+	System.out.println(" Enter  name: ");
+	String ingname=haha.nextLine();
+	System.out.println(" Enter  unit: ");
+	String ingunit=haha.nextLine();
+	System.out.println(" Enter price");
+	int ingprice=hahaa.nextInt();
+	
+	Ingredient iadd=new Ingredient(ingname,ingunit,ingprice);
+	
+	ingredients.add(iadd);
+	System.out.println(iadd.getName()+" -Ingredient added");
+}
+
+public void case8() {
+	Scanner hahai = new Scanner(System.in);
+	System.out.println(" Deleting ingredient ");
+	System.out.println(" Enter  name: ");
+	String ingdte=hahai.nextLine();
+	Ingredient jkl=null;
+	for(Ingredient i: ingredients) {
+		if(i.getName().equals(ingdte))
+			jkl=i;
+	}
+	if(jkl==null)
+		System.out.println(" ingredient not found ");
+	else
+	{
+		ingredients.remove(jkl);
+		System.out.println(" ingredient deleted ");
+		
+	}
+}
+
+public void case9() {
+	System.out.println(" Make specefic recipie according to portion needed ");
+	System.out.println(" Enter Recipie name ");
+	Scanner rr = new Scanner(System.in);
+	String rrname = rr.nextLine();
+	boolean ch=false;
+	for(Recipe p: recipes){
+		if(p.getName().equals(rrname)) {
+			ch=true;
+			System.out.println(" Basic potion for this recpie is  "+p.getNoOfPortion());
+			 System.out.println(" Enter  portion needed");
+			 int bb=rr.nextInt();
+			 p.getSpecificRecipe(bb);	
+		}
+		
+	}
+
+	if(!ch)
+		System.out.println("Reciepe dont exist in our database");
+}
+
+public void menu() {
 		int n;
 		System.out.println("****** Welcome to Recepie App *******");
 outer:
@@ -178,27 +386,7 @@ outer:
 	        	switch(n) {
 	        	
 				case 1:
-					System.out.println(" All recipes ");
-					count=1;
-					for(Recipe p: recipes){
-						System.out.println(count+"- "+p.getName());
-						System.out.println("Portion "+p.getNoOfPortion());
-	            		System.out.println("Ingredients: ");
-		            	for(Ingredient i:p.getRecipeIngredients()) {
-		            		
-		            		System.out.println(i.getName()+" "+p.getAmountList().get(p.getAmount(i))+" "+i.getUnit()+" Price: (per "+i.getUnit()+" "+i.getInprice()+")");
-		            		
-		            	}
-		            	System.out.println("Comments: ");
-		            	String []com=p.getComments().split(";");
-		            	for(String i: com) {
-		            		System.out.println("- "+i);
-		            	}
-		            	System.out.println("Price: "+p.getPrice());
-		            	System.out.println("***************");
-	            		System.out.println("");
-	            		count++;
-		            }    
+					case1();
 					
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
@@ -212,40 +400,8 @@ outer:
 					}
 					
 				case 2:
-					Scanner aaa = new Scanner(System.in);
 					
-					System.out.println(" Adding recipes ");
-					System.out.println(" Enter  name: ");
-					String nam=aaa.nextLine();
-					System.out.println(" Enter  portion: ");
-					String porr=aaa.nextLine();
-					System.out.println(" Enter  indgredients in format : exapmle(1:flour;2:cream;1:cinnamon) ");
-					String inggg=aaa.nextLine();
-					System.out.println(" Enter  comments in format  : exapmle(Mix everything;Wait one day;Make figures) ");
-					String comm=aaa.nextLine();
-					
-					String[] in =inggg.split(";");
-					
-					List<Ingredient> ingredientsadd = new ArrayList<Ingredient>();
-					 List amount = new ArrayList();
-					for(String pp: in) {
-	                	String[] ing2=pp.split(":");
-	                	int am=Integer.parseInt(ing2[0]);
-	                	String ingname=ing2[1];
-	                
-	                	for (Ingredient temp : ingredients) {
-	                		
-	                        if(ingname.equals(temp.getName())) {
-	                        	ingredientsadd.add(temp);
-	                        	amount.add(am);
-	                        }
-	                    }
-	                	
-	                }
-					Recipe pp=new Recipe(nam,porr,comm,ingredientsadd,amount);
-					recipes.add(pp);
-					System.out.println(pp.getName()+" - Recipe added");
-					
+					case2();
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
 					
@@ -258,29 +414,8 @@ outer:
 					}
 					
 				case 3:
-					Scanner aaaa = new Scanner(System.in);
 					
-					System.out.println(" Deleting recipes ");
-					System.out.println(" Enter  name: ");
-					String nammm=aaaa.nextLine();
-					Recipe chf=null;
-					boolean chee=false;
-					for(Recipe p:recipes) {
-						if(p.getName().equals(nammm)) {
-							System.out.println(p.getName()+" - Recipe deleted");
-							chf=p;
-							chee=true;
-							
-							
-						}
-							
-					}
-					
-					if(chee)
-					 recipes.remove(chf);
-					else
-						System.out.println("Recipe not exist");
-					
+				    case3();
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
 					
@@ -292,20 +427,8 @@ outer:
 						continue outer;
 					}
 				case 4:
-					System.out.println("Enter 1 to search by name and 2 to search by max price");
-					Scanner kk = new Scanner(System.in);
-					int hh = kk.nextInt();
 					
-					if(hh==1) {
-						System.out.println("Enter recipie name");
-						Scanner kkk = new Scanner(System.in);
-						String nm= kkk.nextLine();
-						serachStrategy(new nameStrategy(nm));
-					}
-					else {
-						serachStrategy(new priceStretegy());
-					}
-						
+				case4();
 					
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
@@ -318,18 +441,8 @@ outer:
 						continue outer;
 					}
 				case 5:
-					System.out.println(" All Ingredients ");
-					count=1;
-					for(Ingredient p: ingredients){
-						System.out.println(count+"- "+p.getName());
-						System.out.println("Unit: "+p.getUnit());
-						System.out.println("Price: "+p.getInprice());
-		            	
-		            	System.out.println("***************");
-	            		System.out.println("");
-	            		count++;
-		            }    
-					
+					  
+				case5();
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
 					
@@ -342,29 +455,7 @@ outer:
 					}
 					
 				case 6:
-					System.out.println(" View particular Ingredient details ");
-					System.out.println(" Enter Ingredient name ");
-					Scanner sc = new Scanner(System.in);
-					String ingg = sc.nextLine();
-					
-					boolean check=false;
-					for(Ingredient p: ingredients){
-						  if(p.getName().equals(ingg)){
-							  System.out.println(""+p.getName());
-								System.out.println("Unit: "+p.getUnit());
-								System.out.println("Price: "+p.getInprice());
-				            	
-				            	System.out.println("***************");
-			            		System.out.println("");
-			            		check=true;
-						  }
-						  
-		            }    
-					if (check==false) {
-						System.out.println("Ingredient not found");
-						System.out.println("***************");
-	            		System.out.println("");
-					}
+				case6();
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
 					
@@ -377,22 +468,8 @@ outer:
 					}
 					
 				case 7:
-					Scanner haha = new Scanner(System.in);
-					Scanner hahaa = new Scanner(System.in);
 					
-					System.out.println(" Adding ingredient ");
-					System.out.println(" Enter  name: ");
-					String ingname=haha.nextLine();
-					System.out.println(" Enter  unit: ");
-					String ingunit=haha.nextLine();
-					System.out.println(" Enter price");
-					int ingprice=hahaa.nextInt();
-					
-					Ingredient iadd=new Ingredient(ingname,ingunit,ingprice);
-					
-					ingredients.add(iadd);
-					System.out.println(iadd.getName()+" -Ingredient added");
-					
+				case7();
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
 					
@@ -404,24 +481,8 @@ outer:
 						continue outer;
 					}
 				case 8:
-					Scanner hahai = new Scanner(System.in);
-					System.out.println(" Deleting ingredient ");
-					System.out.println(" Enter  name: ");
-					String ingdte=hahai.nextLine();
-					Ingredient jkl=null;
-					for(Ingredient i: ingredients) {
-						if(i.getName().equals(ingdte))
-							jkl=i;
-					}
-					if(jkl==null)
-						System.out.println(" ingredient not found ");
-					else
-					{
-						ingredients.remove(jkl);
-						System.out.println(" ingredient deleted ");
-						
-					}
 					
+				case8();
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
 					j = s.nextInt();
 					
@@ -433,24 +494,7 @@ outer:
 						continue outer;
 					}
 				case 9:
-					System.out.println(" Make specefic recipie according to portion needed ");
-					System.out.println(" Enter Recipie name ");
-					Scanner rr = new Scanner(System.in);
-					String rrname = rr.nextLine();
-					boolean ch=false;
-					for(Recipe p: recipes){
-						if(p.getName().equals(rrname)) {
-							ch=true;
-							System.out.println(" Basic potion for this recpie is  "+p.getNoOfPortion());
-							 System.out.println(" Enter  portion needed");
-							 int bb=rr.nextInt();
-							 p.getSpecificRecipe(bb);	
-						}
-						
-					}
-				
-					if(!ch)
-						System.out.println("Reciepe dont exist in our database");
+				     case9();
 					
 					
 					System.out.println("Enter 0 to exit or any number to go back to main menu:");
@@ -480,7 +524,7 @@ outer:
 		m.readIngredients();
 		m.readrecipes();
 		m.menu();
-		m.updateRecipes();
+		//m.updateRecipes();
 		m.updateIng();
 	}
 
