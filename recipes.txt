@@ -1,3 +1,2 @@
-Gingerbread biscuit,100 pieces,1:flour;2:cream;1:cinnamon;,Mix everything;Wait one day;Make figures
-Chicken dish,1 kg,1:flour;2:cream;1:cinnamon;1:flour;2:cream;1:cinnamon;1:flour;2:cream;1:cinnamon;2:chicken;1:floor;4:oliveoil;,Mix everything;cook for 2 hour;add extra spicy 
-Meat,1 kg,1:flour;2:cream;1:cinnamon;1:flour;2:cream;1:cinnamon;1:flour;2:cream;1:cinnamon;2:chicken;1:floor;4:oliveoil;3:flour;4:cream;,Mix; cook; eat
+Gingerbread biscuit,100 pieces,1:flour;2:cream;1:cinnamon,Mix everything;Wait one day;Make figures
+Chicken dish,1 kg,2:chicken;1:floor;4:oliveoil,Mix everything;cook for 2 hour;add extra spicy 
